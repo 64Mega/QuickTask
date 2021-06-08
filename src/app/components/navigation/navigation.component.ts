@@ -5,6 +5,8 @@ import { map, shareReplay } from 'rxjs/operators';
 import { MatDialog } from '@angular/material/dialog';
 import { AddTaskDialogComponent } from '../add-task-dialog/add-task-dialog.component';
 import { TaskDBService } from 'src/app/services/taskdb.service';
+import { UpdateService } from 'src/app/services/update.service';
+import { MatSnackBar } from '@angular/material/snack-bar';
 
 @Component({
   selector: 'app-navigation',
@@ -28,7 +30,9 @@ export class NavigationComponent
   constructor(
     private breakpointObserver: BreakpointObserver,
     private dialog: MatDialog,
-    private tasks: TaskDBService
+    private tasks: TaskDBService,
+    private updates: UpdateService,
+    private snackbar: MatSnackBar
   ) {}
 
   ngAfterContentInit() {
@@ -43,7 +47,18 @@ export class NavigationComponent
     });
   }
 
-  ngOnInit() {}
+  ngOnInit() {
+    this.updates.updateAvailable$.subscribe((isUpdateAvailable) => {
+      if (isUpdateAvailable === true) {
+        let ref = this.snackbar.open('A new update is available!', 'Update');
+        ref.onAction().subscribe(() => {
+          this.updates.updates.activateUpdate().then(() => {
+            document.location.reload();
+          });
+        });
+      }
+    });
+  }
 
   ngOnDestroy() {
     if (this._inboxSub) {
@@ -55,6 +70,7 @@ export class NavigationComponent
     if (this.dialog.openDialogs.length === 0) {
       this.dialog.open(AddTaskDialogComponent, {
         width: '250px',
+        restoreFocus: false,
       });
     }
   }

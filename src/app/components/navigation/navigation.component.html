@@ -1,0 +1,65 @@
+<mat-sidenav-container class="sidenav-container" autosize>
+  <mat-sidenav #drawer class="sidenav" fixedInViewport
+      [attr.role]="(isHandset$ | async) ? 'dialog' : 'navigation'"
+      [mode]="(isHandset$ | async) ? 'over' : 'side'"
+      [opened]="(isHandset$ | async) === false">
+    <mat-toolbar>
+      <span>Categories</span>
+    </mat-toolbar>
+
+    <mat-divider></mat-divider>
+
+    <mat-nav-list>
+      <a mat-list-item href="category/inbox" class="list-link" >
+        <div class="list-link-title">Inbox</div>
+        <div class="list-link-unread" *ngIf="inboxNum">{{inboxNum}}</div>
+      </a>
+      <a mat-list-item href="category/completed">
+        <div class="list-link-title">Completed</div>
+        <div class="list-link-unread" *ngIf="completeNum>0">{{completeNum}}</div>
+      </a>
+      <a mat-list-item href="category/backlog">
+        <div class="list-link-title">Backlog</div>
+        <div class="list-link-unread" *ngIf="backlogNum>0">{{backlogNum}}</div></a>
+    </mat-nav-list>
+
+    <mat-divider></mat-divider>
+
+    <mat-toolbar>
+
+        <span>Projects</span>
+        <button
+        type="button"
+        aria-label="Add project"
+        mat-icon-button
+        >
+          <mat-icon aria-label="Side nav add project button">add</mat-icon>
+        </button>
+    </mat-toolbar>
+
+    <mat-divider></mat-divider>
+
+    <mat-nav-list>
+      <a mat-list-item href="#">QuickTask Development</a>
+      <a mat-list-item href="#">Shopping list</a>
+    </mat-nav-list>
+  </mat-sidenav>
+  <mat-sidenav-content>
+    <mat-toolbar color="primary">
+      <button
+        type="button"
+        aria-label="Toggle sidenav"
+        mat-icon-button
+        (click)="drawer.toggle()"
+        *ngIf="isHandset$ | async">
+        <mat-icon aria-label="Side nav toggle icon">menu</mat-icon>
+      </button>
+      <span class="toolbar-header">
+        <span>QuickTask</span>
+        <button mat-stroked-button (click)="openAddDialog()">ADD <mat-icon>add</mat-icon></button>
+      </span>
+    </mat-toolbar>
+    <!-- Add Content Here -->
+    <router-outlet></router-outlet>
+  </mat-sidenav-content>
+</mat-sidenav-container>

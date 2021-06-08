@@ -1,0 +1,21 @@
+.detail {
+  &-card {
+    margin: 16px;
+  }
+
+  &-body {
+    padding: 16px;
+  }
+
+  &-progress {
+    padding: 4px;
+  }
+
+  &-header {
+    display: flex;
+    position: relative;
+    justify-content: space-between;
+    justify-items: center;
+    align-items: center;
+  }
+}

@@ -1,0 +1,14 @@
+.home {
+  &-container {
+    width: 100%;
+    position: relative;
+
+    .list {
+      margin: 20px;
+    }
+
+    .task-container {
+      margin-top: 20px;
+    }
+  }
+}

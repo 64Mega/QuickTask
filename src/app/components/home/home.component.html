@@ -1,0 +1,12 @@
+<div class="home-container">
+    <div class="list">
+        <h1>{{viewTitle}}</h1>
+        <mat-divider></mat-divider>
+
+        <div class="task-container">
+        <ng-container *ngFor="let task of tasks">
+            <app-task-card [task]="task"></app-task-card>
+        </ng-container>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,18 @@
+<mat-card class="task-card">
+  <span class="task-header-container">
+    <mat-checkbox title="Complete Task" [checked]="task.completed" (change)="clickToggle()"></mat-checkbox>
+        <h2 matRipple (click)="clickDetails()" class="task-title" title="{{task.body}}">{{task.body}}</h2>
+    <span>
+      <button mat-button (click)="clickMenu()" [matMenuTriggerFor]="menu" #trigger="matMenuTrigger" title="Task Menu" aria-label="Open Task Menu">
+        <mat-icon>toc_outline</mat-icon>
+      </button>
+    </span>
+
+  </span>
+  <mat-menu mat-button #menu>
+    <button mat-menu-item (click)="clickMoveToBacklog()">Move to Backlog</button>
+    <button mat-menu-item (click)="clickDelete()">Delete Task</button>
+  </mat-menu>
+</mat-card>
+
+

@@ -77,6 +77,12 @@ export class TaskDBService {
   }
 
   async insert(row: Task) {
+    if (this.router.url === '/category/backlog') {
+      if (!row.tags.includes('backlog')) {
+        row.tags.push('backlog');
+      }
+    }
+
     const data = await this._tasks.Insert(row);
     this.snack.open("Added '" + row.task + "' to Inbox", undefined, {
       duration: 3000,

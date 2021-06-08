@@ -56,7 +56,7 @@
       </button>
       <span class="toolbar-header">
         <span>QuickTask</span>
-        <button mat-stroked-button (click)="openAddDialog()">ADD <mat-icon>add</mat-icon></button>
+        <button mat-stroked-button (document:keydown.shift.a)="openAddDialog()" (click)="openAddDialog()">ADD <mat-icon>add</mat-icon></button>
       </span>
     </mat-toolbar>
     <!-- Add Content Here -->

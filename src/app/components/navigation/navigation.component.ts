@@ -52,8 +52,10 @@ export class NavigationComponent
   }
 
   openAddDialog() {
-    this.dialog.open(AddTaskDialogComponent, {
-      width: '250px',
-    });
+    if (this.dialog.openDialogs.length === 0) {
+      this.dialog.open(AddTaskDialogComponent, {
+        width: '250px',
+      });
+    }
   }
 }

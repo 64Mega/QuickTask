@@ -1,4 +1,4 @@
-import { DBRow } from 'localdb';
+import { DBRow } from '@64mega/localdb';
 import { Task } from './Task';
 
 export class Schedule implements DBRow {

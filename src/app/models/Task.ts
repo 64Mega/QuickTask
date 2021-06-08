@@ -1,4 +1,4 @@
-import { DBRow } from 'localdb';
+import { DBRow } from '@64mega/localdb';
 
 interface WorkSession {
   start_time: Date;

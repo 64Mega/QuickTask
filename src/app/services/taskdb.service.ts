@@ -10,6 +10,8 @@ import {
   Subscription,
 } from 'rxjs';
 import { Task } from '../models/Task';
+import { MatSnackBar, MatSnackBarRef } from '@angular/material/snack-bar';
+import { ActivatedRoute, Router } from '@angular/router';
 
 @Injectable({
   providedIn: 'root',
@@ -25,7 +27,11 @@ export class TaskDBService {
 
   private _dataSub?: Subscription;
 
-  constructor() {
+  constructor(
+    private snack: MatSnackBar,
+    private activeRoute: ActivatedRoute,
+    private router: Router
+  ) {
     this._tasks = new TaskDB();
   }
 
@@ -72,6 +78,14 @@ export class TaskDBService {
 
   async insert(row: Task) {
     const data = await this._tasks.Insert(row);
+    this.snack.open("Added '" + row.task + "' to Inbox", undefined, {
+      duration: 3000,
+    });
+
+    if (this.router.url === '/category/completed') {
+      this.router.navigate(['/category/inbox']);
+    }
+
     this.getAll();
     return data;
   }

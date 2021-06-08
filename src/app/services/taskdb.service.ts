@@ -84,7 +84,7 @@ export class TaskDBService {
     }
 
     const data = await this._tasks.Insert(row);
-    this.snack.open("Added '" + row.task + "' to Inbox", undefined, {
+    this.snack.open("Added '" + row.task + "'", undefined, {
       duration: 3000,
     });
 

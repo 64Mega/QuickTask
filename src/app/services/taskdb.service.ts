@@ -12,13 +12,11 @@ import {
 import { Task } from '../models/Task';
 import { MatSnackBar, MatSnackBarRef } from '@angular/material/snack-bar';
 import { ActivatedRoute, Router } from '@angular/router';
-
+import QuicktaskDatabase from '../database/DB';
 @Injectable({
   providedIn: 'root',
 })
 export class TaskDBService {
-  private _tasks: TaskDB;
-
   private tasks: Subject<Task[]> = new Subject<Task[]>();
   public tasks$ = this.tasks.asObservable();
 
@@ -27,16 +25,17 @@ export class TaskDBService {
 
   private _dataSub?: Subscription;
 
+  private db = new QuicktaskDatabase();
+
   constructor(
     private snack: MatSnackBar,
     private activeRoute: ActivatedRoute,
     private router: Router
-  ) {
-    this._tasks = new TaskDB();
-  }
+  ) {}
 
   async getAll() {
-    const data = of(this._tasks.GetAll());
+    //const data = of(this._tasks.GetAll());
+    const data = of(await this.db.tasks.toArray());
 
     if (this._dataSub) {
       this._dataSub.unsubscribe();
@@ -52,27 +51,24 @@ export class TaskDBService {
     return data;
   }
 
-  save(task: Task) {
-    this._tasks.Update(task);
+  async save(task: Task) {
+    //this._tasks.Update(task);
+    await this.db.tasks.put(task, task.id);
     this.getAll();
   }
 
   getById(id: number) {
-    const data = this._tasks.GetByID(id);
-    return of(data);
+    const data = this.db.tasks.get(id);
+    return from(data);
   }
 
   getIncomplete() {
-    const data = this._tasks.GetByFilter((row) => {
-      return !row.completed;
-    });
+    const data = this.db.tasks.where({ completed: false }).toArray();
     return from(data);
   }
 
   getComplete() {
-    const data = this._tasks.GetByFilter((row) => {
-      return row.completed;
-    });
+    const data = this.db.tasks.where({ completed: true }).toArray();
     return from(data);
   }
 
@@ -83,7 +79,9 @@ export class TaskDBService {
       }
     }
 
-    const data = await this._tasks.Insert(row);
+    const key = await this.db.tasks.put(row);
+    const data = await this.db.tasks.get(key);
+
     this.snack.open("Added '" + row.task + "'", undefined, {
       duration: 3000,
     });
@@ -93,22 +91,22 @@ export class TaskDBService {
     }
 
     this.getAll();
-    return data;
-  }
-
-  deleteRow(row: Task) {
-    const data = this._tasks.DeleteRow(row);
-    this.getAll();
     return of(data);
   }
 
-  toggleTaskCompletion(row: Task) {
+  async deleteRow(row: Task) {
+    if (row.id) await this.db.tasks.delete(row.id);
+    this.getAll();
+    return of(true);
+  }
+
+  async toggleTaskCompletion(row: Task) {
     if (row.completed) {
       row.completed = !row.completed;
     } else {
       row.completed = true;
     }
-    const result = this._tasks.Update(row);
+    const result = await this.save(row);
     this.getAll();
     return of(result);
   }

@@ -24,7 +24,9 @@ export class TaskDetailComponent implements OnInit, OnDestroy {
   ngOnInit(): void {
     this.sub = this.route.params.subscribe(async (params) => {
       this.id = +params['id'];
-      this.tasks.getById(this.id).subscribe((res) => (this.task = res));
+      this.tasks.getById(this.id).subscribe((res) => {
+        if (res) this.task = res;
+      });
     });
   }
 

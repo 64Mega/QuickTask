@@ -31,7 +31,23 @@ export class TaskDBService {
     private snack: MatSnackBar,
     private activeRoute: ActivatedRoute,
     private router: Router
-  ) {}
+  ) {
+    // This bit of code checks for residual data in LocalDB and moves
+    // it to Dexie.
+    if (localStorage.getItem('tasks')) {
+      const _tasks = new TaskDB();
+
+      const tasks = _tasks.GetAll();
+      tasks.forEach((task) => {
+        let id = task.id;
+        delete task.id;
+        this.db.tasks.put(task);
+        if (id) _tasks.DeleteById(id);
+      });
+
+      localStorage.removeItem('tasks');
+    }
+  }
 
   async getAll() {
     //const data = of(this._tasks.GetAll());

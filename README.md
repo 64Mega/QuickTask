@@ -1,5 +1,15 @@
 # Quicktask
 
+Deployed Project is live at: [https://trusting-elion-09134d.netlify.app/](https://trusting-elion-09134d.netlify.app/)
+
+## Description
+
+Quicktask is a "quick" implementation of a task management/todo system in Angular, designed
+to be PWA-first (Client-side storage, works entirely offline).
+
+Please note that the project currently depends on a custom NPM package, `localdb`, found here:
+[https://github.com/64Mega/localdb](https://github.com/64Mega/localdb)
+
 This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 12.0.2.
 
 ## Development server

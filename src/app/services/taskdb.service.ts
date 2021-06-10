@@ -13,19 +13,20 @@ import { Task } from '../models/Task';
 import { MatSnackBar, MatSnackBarRef } from '@angular/material/snack-bar';
 import { ActivatedRoute, Router } from '@angular/router';
 import QuicktaskDatabase from '../database/DB';
+/**
+ * Injectable service that manages CRUD operations for Tasks.
+ */
 @Injectable({
   providedIn: 'root',
 })
 export class TaskDBService {
   private tasks: Subject<Task[]> = new Subject<Task[]>();
-  public tasks$ = this.tasks.asObservable();
+  private _dataSub?: Subscription;
+  private db = new QuicktaskDatabase();
 
+  public tasks$ = this.tasks.asObservable();
   public completedTasks: Task[] = [];
   public incompleteTasks: Task[] = [];
-
-  private _dataSub?: Subscription;
-
-  private db = new QuicktaskDatabase();
 
   constructor(
     private snack: MatSnackBar,
@@ -49,6 +50,15 @@ export class TaskDBService {
     }
   }
 
+  /**
+   * Fetches data from the database, subscribes to the result and
+   * refreshes service-local properties on update.
+   *
+   * Instead of subscribing to the return value of this method,
+   * rather subscribe to the `tasks$` property.
+   *
+   * @returns Promise<Observable<Task[]>>
+   */
   async getAll() {
     //const data = of(this._tasks.GetAll());
     const data = of(await this.db.tasks.toArray());
@@ -67,28 +77,56 @@ export class TaskDBService {
     return data;
   }
 
+  /**
+   * Saves (Updates) a row.
+   * @param task : Task - row to update (row.id must be set for this to work)
+   */
   async save(task: Task) {
     //this._tasks.Update(task);
     await this.db.tasks.put(task, task.id);
     this.getAll();
   }
 
+  /**
+   * Get specific Task by id.
+   *
+   * @param id
+   * @returns Returns a task or undefined if not found.
+   */
   getById(id: number) {
     const data = this.db.tasks.get(id);
     return from(data);
   }
 
+  /**
+   * Get an array of completed tasks.
+   * @deprecated
+   * Subscribe to $tasks instead and filter where necessary.
+   * @returns Array of completed tasks
+   */
   getIncomplete() {
     const data = this.db.tasks.where({ completed: false }).toArray();
     return from(data);
   }
 
+  /**
+   * Get an array of incomplete tasks.
+   * @deprecated
+   * Subscribe to $tasks instead and filter where necessary.
+   * @returns Array of incomplete tasks
+   */
   getComplete() {
     const data = this.db.tasks.where({ completed: true }).toArray();
     return from(data);
   }
 
+  /**
+   * Adds a new row to the database.
+   * @param row Row data of type Task
+   * @returns
+   */
   async insert(row: Task) {
+    /// FIXME: Find a better way to do this context-based add.
     if (this.router.url === '/category/backlog') {
       if (!row.tags.includes('backlog')) {
         row.tags.push('backlog');
@@ -102,6 +140,7 @@ export class TaskDBService {
       duration: 3000,
     });
 
+    /// FIXME: Find a better way to handle this.
     if (this.router.url === '/category/completed') {
       this.router.navigate(['/category/inbox']);
     }
@@ -110,12 +149,23 @@ export class TaskDBService {
     return of(data);
   }
 
+  /**
+   * Deletes a row from the database.
+   * @param row Row with id set
+   * @returns
+   */
   async deleteRow(row: Task) {
     if (row.id) await this.db.tasks.delete(row.id);
     this.getAll();
     return of(true);
   }
 
+  /**
+   * Toggle the completed property of a task, save it to the database
+   * and reload data to trigger updates.
+   * @param row
+   * @returns
+   */
   async toggleTaskCompletion(row: Task) {
     if (row.completed) {
       row.completed = !row.completed;
@@ -127,6 +177,10 @@ export class TaskDBService {
     return of(result);
   }
 
+  /**
+   * Toggle backlog tag on a task and refresh data to trigger updates.
+   * @param task
+   */
   toggleBacklog(task: Task) {
     if (task.tags.includes('backlog')) {
       let i = task.tags.findIndex((tag) => tag === 'backlog');

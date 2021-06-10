@@ -30,6 +30,7 @@ import { MatInputModule } from '@angular/material/input';
 import { MatBadgeModule } from '@angular/material/badge';
 import { ServiceWorkerModule } from '@angular/service-worker';
 import { environment } from '../environments/environment';
+import { LinkComponent } from './components/link/link.component';
 @NgModule({
   declarations: [
     AppComponent,
@@ -38,6 +39,7 @@ import { environment } from '../environments/environment';
     TaskCardComponent,
     TaskDetailComponent,
     AddTaskDialogComponent,
+    LinkComponent,
   ],
   imports: [
     BrowserModule,

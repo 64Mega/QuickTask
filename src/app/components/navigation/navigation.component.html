@@ -33,6 +33,8 @@
         type="button"
         aria-label="Add project"
         mat-icon-button
+        (document:keydown.shift.p)="openProjectDialog()"
+        (click)="openProjectDialog()"
         >
           <mat-icon aria-label="Side nav add project button">add</mat-icon>
         </button>
@@ -41,8 +43,9 @@
     <mat-divider></mat-divider>
 
     <mat-nav-list>
-      <a mat-list-item routerLink="/">QuickTask Development</a>
-      <a mat-list-item routerLink="/">Shopping list</a>
+      <applink *ngFor="let project of (projectService.projects$ | async)" href="/project/{{project.id}}">
+        <div class="list-link-title">{{project.name}}</div>
+      </applink>
     </mat-nav-list>
   </mat-sidenav>
   <mat-sidenav-content>

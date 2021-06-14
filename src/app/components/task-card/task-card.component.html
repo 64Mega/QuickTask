@@ -10,7 +10,8 @@
 
   </span>
   <mat-menu mat-button #menu>
-    <button mat-menu-item (click)="clickMoveToBacklog()">Move to Backlog</button>
+    <button *ngIf="showBacklogOption && !onBacklogPage" mat-menu-item (click)="clickMoveToBacklog()">Move to Backlog</button>
+    <button *ngIf="showBacklogOption && onBacklogPage" mat-menu-item (click)="clickMoveToBacklog()">Remove from Backlog</button>
     <button mat-menu-item (click)="clickDelete()">Delete Task</button>
   </mat-menu>
 </mat-card>

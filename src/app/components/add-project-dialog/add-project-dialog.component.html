@@ -1,0 +1,13 @@
+<h1 mat-dialog-title>Add New Project</h1>
+<div mat-dialog-content>
+  <form (ngSubmit)="addProject()">
+    <mat-form-field>
+      <mat-label>What is your Project called?</mat-label>
+      <input matInput name="project" [(ngModel)]="projectName" cdkFocusInitial>
+    </mat-form-field>
+  </form>
+</div>
+<div mat-dialog-actions>
+  <button mat-button (click)="clickClose()">Cancel</button>
+  <button mat-button (click)="addProject()" color="primary">Add</button>
+</div>

@@ -16,7 +16,7 @@ import {
   ViewEncapsulation,
 } from '@angular/core';
 import { MatMenu, MatMenuTrigger } from '@angular/material/menu';
-import { Router } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { Task } from 'src/app/models/Task';
 import { TaskDBService } from 'src/app/services/taskdb.service';
 
@@ -31,11 +31,38 @@ export class TaskCardComponent implements OnInit {
   @Output() deleteTask = new EventEmitter<Task>();
   @Output() toggleTask = new EventEmitter<Task>();
   @Output() openMenu = new EventEmitter<Task>();
+
+  showBacklogOption = true;
+  onBacklogPage = false;
+
   constructor(
     private router: Router,
+    private activeRoute: ActivatedRoute,
     private changeDetectorRef: ChangeDetectorRef,
     private tasks: TaskDBService
   ) {}
+
+  ngOnInit() {
+    this.activeRoute.url.subscribe((url) => {
+      const segment = url[1]?.path;
+      switch (segment) {
+        case 'inbox':
+          this.showBacklogOption = true;
+          this.onBacklogPage = false;
+          break;
+        case 'backlog':
+          this.showBacklogOption = true;
+          this.onBacklogPage = true;
+          break;
+        case 'completed':
+          this.onBacklogPage = false;
+          this.showBacklogOption = false;
+          break;
+        default:
+          this.showBacklogOption = false;
+      }
+    });
+  }
 
   clickDelete() {
     //this.deleteTask.emit(this.task);
@@ -64,6 +91,4 @@ export class TaskCardComponent implements OnInit {
   clickDetails() {
     this.router.navigate(['/task/', this.task.id]);
   }
-
-  ngOnInit(): void {}
 }

@@ -8,7 +8,7 @@ import { TaskDBService } from 'src/app/services/taskdb.service';
   templateUrl: './add-task-dialog.component.html',
   styleUrls: ['./add-task-dialog.component.scss'],
 })
-export class AddTaskDialogComponent implements OnInit {
+export class AddTaskDialogComponent {
   public taskShort: string = '';
   constructor(
     private dialogRef: MatDialogRef<AddTaskDialogComponent>,
@@ -31,6 +31,4 @@ export class AddTaskDialogComponent implements OnInit {
   clickClose() {
     this.dialogRef.close();
   }
-
-  ngOnInit(): void {}
 }

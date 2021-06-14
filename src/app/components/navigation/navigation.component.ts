@@ -7,6 +7,8 @@ import { AddTaskDialogComponent } from '../add-task-dialog/add-task-dialog.compo
 import { TaskDBService } from 'src/app/services/taskdb.service';
 import { UpdateService } from 'src/app/services/update.service';
 import { MatSnackBar } from '@angular/material/snack-bar';
+import { AddProjectDialogComponent } from '../add-project-dialog/add-project-dialog.component';
+import { ProjectsService } from 'src/app/services/projects.service';
 
 @Component({
   selector: 'app-navigation',
@@ -32,7 +34,8 @@ export class NavigationComponent
     private dialog: MatDialog,
     private tasks: TaskDBService,
     private updates: UpdateService,
-    private snackbar: MatSnackBar
+    private snackbar: MatSnackBar,
+    public projectService: ProjectsService
   ) {}
 
   ngAfterContentInit() {
@@ -58,6 +61,8 @@ export class NavigationComponent
         });
       }
     });
+
+    this.projectService.getAll();
   }
 
   ngOnDestroy() {
@@ -69,6 +74,15 @@ export class NavigationComponent
   openAddDialog() {
     if (this.dialog.openDialogs.length === 0) {
       this.dialog.open(AddTaskDialogComponent, {
+        width: '250px',
+        restoreFocus: false,
+      });
+    }
+  }
+
+  openProjectDialog() {
+    if (this.dialog.openDialogs.length === 0) {
+      this.dialog.open(AddProjectDialogComponent, {
         width: '250px',
         restoreFocus: false,
       });

@@ -15,6 +15,7 @@ export class ProjectComponent implements OnInit, OnDestroy {
   public tasks: Task[] = [];
   public project?: Project;
   private _routeSub?: Subscription;
+  private _taskSub?: Subscription;
 
   constructor(
     private activeRoute: ActivatedRoute,
@@ -23,8 +24,19 @@ export class ProjectComponent implements OnInit, OnDestroy {
   ) {}
 
   ngOnDestroy() {
-    if (this._routeSub) {
-      this._routeSub.unsubscribe();
+    this._routeSub?.unsubscribe();
+    this._taskSub?.unsubscribe();
+  }
+
+  subToTasks() {
+    this._taskSub?.unsubscribe();
+
+    if (this.project?.id) {
+      this._taskSub = this.taskService
+        .getByProjectId(this.project.id)
+        .subscribe((tasks) => {
+          this.tasks = tasks;
+        });
     }
   }
 
@@ -33,14 +45,11 @@ export class ProjectComponent implements OnInit, OnDestroy {
       let project$ = await this.projectService.getById(+params.id);
       let s = project$.subscribe((project) => {
         this.project = project;
+        this.subToTasks();
         s.unsubscribe();
       });
     });
 
-    if (this.project?.id) {
-      this.taskService.getByProjectId(this.project.id).subscribe((tasks) => {
-        this.tasks = tasks;
-      });
-    }
+    this.subToTasks();
   }
 }

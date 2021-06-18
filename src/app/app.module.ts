@@ -31,6 +31,8 @@ import { MatBadgeModule } from '@angular/material/badge';
 import { ServiceWorkerModule } from '@angular/service-worker';
 import { environment } from '../environments/environment';
 import { LinkComponent } from './components/link/link.component';
+import { AddProjectDialogComponent } from './components/add-project-dialog/add-project-dialog.component';
+import { ProjectComponent } from './components/project/project.component';
 @NgModule({
   declarations: [
     AppComponent,
@@ -40,6 +42,8 @@ import { LinkComponent } from './components/link/link.component';
     TaskDetailComponent,
     AddTaskDialogComponent,
     LinkComponent,
+    AddProjectDialogComponent,
+    ProjectComponent,
   ],
   imports: [
     BrowserModule,
@@ -64,6 +68,7 @@ import { LinkComponent } from './components/link/link.component';
     MatFormFieldModule,
     MatInputModule,
     MatBadgeModule,
+    //@ts-ignore
     ServiceWorkerModule.register('ngsw-worker.js', {
       enabled: environment.production,
       // Register the ServiceWorker as soon as the app is stable

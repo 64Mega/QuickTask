@@ -110,6 +110,15 @@ export class TaskDBService {
   }
 
   /**
+   * Get tasks belonging to a specific project
+   * @returns Array of tasks belonging to a project
+   */
+  getByProjectId(projectId: number) {
+    const data = this.db.tasks.where({ project_id: projectId }).toArray();
+    return from(data);
+  }
+
+  /**
    * Get an array of incomplete tasks.
    * @deprecated
    * Subscribe to $tasks instead and filter where necessary.

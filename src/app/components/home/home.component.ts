@@ -59,11 +59,15 @@ export class HomeComponent implements OnInit, OnDestroy {
           this.tasks = res.filter((t) => {
             switch (this.viewing) {
               case 'inbox':
-                return !t.completed && !t.tags.includes('backlog');
+                return (
+                  !t.completed && !t.tags.includes('backlog') && !t.project_id
+                );
               case 'completed':
                 return t.completed;
               case 'backlog':
-                return !t.completed && t.tags.includes('backlog');
+                return (
+                  !t.completed && t.tags.includes('backlog') && !t.project_id
+                );
             }
           });
         }

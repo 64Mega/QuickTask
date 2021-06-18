@@ -41,11 +41,11 @@ export class NavigationComponent
   ngAfterContentInit() {
     this._inboxSub = this.tasks.tasks$.subscribe((tasks) => {
       this.inboxNum = tasks.filter(
-        (x) => !x.completed && !x.tags.includes('backlog')
+        (x) => !x.completed && !x.tags.includes('backlog') && !x.project_id
       ).length;
       this.completeNum = tasks.filter((x) => x.completed).length;
       this.backlogNum = tasks.filter(
-        (x) => !x.completed && x.tags.includes('backlog')
+        (x) => !x.completed && x.tags.includes('backlog') && !x.project_id
       ).length;
     });
   }

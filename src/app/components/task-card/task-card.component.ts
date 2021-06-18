@@ -15,10 +15,13 @@ import {
   ViewChild,
   ViewEncapsulation,
 } from '@angular/core';
+import { MatDialog } from '@angular/material/dialog';
 import { MatMenu, MatMenuTrigger } from '@angular/material/menu';
 import { ActivatedRoute, Router } from '@angular/router';
+import { Project } from 'src/app/models/Project';
 import { Task } from 'src/app/models/Task';
 import { TaskDBService } from 'src/app/services/taskdb.service';
+import { ChooseProjectDialogComponent } from '../choose-project-dialog/choose-project-dialog.component';
 
 @Component({
   selector: 'app-task-card',
@@ -39,7 +42,8 @@ export class TaskCardComponent implements OnInit {
     private router: Router,
     private activeRoute: ActivatedRoute,
     private changeDetectorRef: ChangeDetectorRef,
-    private tasks: TaskDBService
+    private tasks: TaskDBService,
+    private dialog: MatDialog
   ) {}
 
   ngOnInit() {
@@ -90,5 +94,24 @@ export class TaskCardComponent implements OnInit {
 
   clickDetails() {
     this.router.navigate(['/task/', this.task.id]);
+  }
+
+  clickAssignToProject() {
+    if (this.dialog.openDialogs.length === 0) {
+      this.dialog
+        .open(ChooseProjectDialogComponent, {
+          width: '250px',
+          restoreFocus: false,
+        })
+        .afterClosed()
+        .subscribe(async (result?: Project) => {
+          if (result) {
+            this.task.project_id = result.id;
+            await this.tasks.save(this.task);
+            this.tasks.getAll();
+            this.router.navigate(['/project/', this.task.project_id]);
+          }
+        });
+    }
   }
 }

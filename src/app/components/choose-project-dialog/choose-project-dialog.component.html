@@ -1,0 +1,17 @@
+<h1 mat-dialog-title>Select a project</h1>
+<div mat-dialog-content>
+  <form (ngSubmit)="null">
+    <mat-form-field>
+      <mat-label>Which project do you choose?</mat-label>
+      <mat-select required [(value)]="selectedProject">
+        <mat-option *ngFor="let project of (projects.projects$ | async)" [value]="project">
+          {{project.name}}
+        </mat-option>
+      </mat-select>
+    </mat-form-field>
+  </form>
+</div>
+<div mat-dialog-actions>
+  <button mat-button (click)="clickClose()">Cancel</button>
+  <button mat-button (click)="selectProject()" color="primary">Select</button>
+</div>

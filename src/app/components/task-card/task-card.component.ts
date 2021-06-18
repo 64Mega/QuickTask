@@ -114,4 +114,11 @@ export class TaskCardComponent implements OnInit {
         });
     }
   }
+
+  async clickRemoveFromProject() {
+    this.task.project_id = undefined;
+    await this.tasks.save(this.task);
+    this.tasks.getAll();
+    this.router.navigate(['/']);
+  }
 }

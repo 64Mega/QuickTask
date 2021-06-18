@@ -14,6 +14,7 @@
     <button *ngIf="showBacklogOption && onBacklogPage" mat-menu-item (click)="clickMoveToBacklog()">Remove from Backlog</button>
     <button mat-menu-item (click)="clickDelete()">Delete Task</button>
     <button mat-menu-item (click)="clickAssignToProject()">Assign to Project...</button>
+    <button mat-menu-item *ngIf="task.project_id" (click)="clickRemoveFromProject()">Remove from Project</button>
   </mat-menu>
 </mat-card>
 

@@ -4,7 +4,7 @@ import { Subscription } from 'rxjs';
 import { Project } from 'src/app/models/Project';
 import { Task } from 'src/app/models/Task';
 import { ProjectsService } from 'src/app/services/projects.service';
-import { TaskDBService } from 'src/app/services/taskdb.service';
+import { TasksService } from 'src/app/services/tasks.service';
 
 @Component({
   selector: 'app-project',
@@ -19,7 +19,7 @@ export class ProjectComponent implements OnInit, OnDestroy {
 
   constructor(
     private activeRoute: ActivatedRoute,
-    private taskService: TaskDBService,
+    private taskService: TasksService,
     private projectService: ProjectsService
   ) {}
 

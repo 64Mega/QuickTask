@@ -1,7 +1,7 @@
 import { Component, NgZone, OnInit } from '@angular/core';
 import { MatDialogRef } from '@angular/material/dialog';
 import { Task } from 'src/app/models/Task';
-import { TaskDBService } from 'src/app/services/taskdb.service';
+import { TasksService } from 'src/app/services/tasks.service';
 
 @Component({
   selector: 'app-add-task-dialog',
@@ -12,7 +12,7 @@ export class AddTaskDialogComponent {
   public taskShort: string = '';
   constructor(
     private dialogRef: MatDialogRef<AddTaskDialogComponent>,
-    private tasks: TaskDBService,
+    private tasks: TasksService,
     private zone: NgZone
   ) {}
 

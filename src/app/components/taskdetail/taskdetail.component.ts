@@ -2,7 +2,7 @@ import { Component, OnDestroy, OnInit } from '@angular/core';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Task } from 'src/app/models/Task';
-import { TaskDBService } from 'src/app/services/taskdb.service';
+import { TasksService } from 'src/app/services/tasks.service';
 
 @Component({
   selector: 'app-task-detail',
@@ -17,7 +17,7 @@ export class TaskDetailComponent implements OnInit, OnDestroy {
   constructor(
     private route: ActivatedRoute,
     private router: Router,
-    private tasks: TaskDBService,
+    private tasks: TasksService,
     private snackBar: MatSnackBar
   ) {}
 

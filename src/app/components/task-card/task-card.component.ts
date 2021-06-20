@@ -20,7 +20,7 @@ import { MatMenu, MatMenuTrigger } from '@angular/material/menu';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Project } from 'src/app/models/Project';
 import { Task } from 'src/app/models/Task';
-import { TaskDBService } from 'src/app/services/taskdb.service';
+import { TasksService } from 'src/app/services/tasks.service';
 import { ChooseProjectDialogComponent } from '../choose-project-dialog/choose-project-dialog.component';
 
 @Component({
@@ -42,7 +42,7 @@ export class TaskCardComponent implements OnInit {
     private router: Router,
     private activeRoute: ActivatedRoute,
     private changeDetectorRef: ChangeDetectorRef,
-    private tasks: TaskDBService,
+    private tasks: TasksService,
     private dialog: MatDialog
   ) {}
 
@@ -107,7 +107,7 @@ export class TaskCardComponent implements OnInit {
         .subscribe(async (result?: Project) => {
           if (result) {
             this.task.project_id = result.id;
-            await this.tasks.save(this.task);
+            await this.tasks.update(this.task);
             this.tasks.getAll();
             this.router.navigate(['/project/', this.task.project_id]);
           }
@@ -117,7 +117,7 @@ export class TaskCardComponent implements OnInit {
 
   async clickRemoveFromProject() {
     this.task.project_id = undefined;
-    await this.tasks.save(this.task);
+    await this.tasks.update(this.task);
     this.tasks.getAll();
     this.router.navigate(['/']);
   }

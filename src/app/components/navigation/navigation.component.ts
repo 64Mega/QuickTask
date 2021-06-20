@@ -4,7 +4,7 @@ import { Observable, Subscription } from 'rxjs';
 import { map, shareReplay } from 'rxjs/operators';
 import { MatDialog } from '@angular/material/dialog';
 import { AddTaskDialogComponent } from '../add-task-dialog/add-task-dialog.component';
-import { TaskDBService } from 'src/app/services/taskdb.service';
+import { TasksService } from 'src/app/services/tasks.service';
 import { UpdateService } from 'src/app/services/update.service';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { AddProjectDialogComponent } from '../add-project-dialog/add-project-dialog.component';
@@ -32,7 +32,7 @@ export class NavigationComponent
   constructor(
     private breakpointObserver: BreakpointObserver,
     private dialog: MatDialog,
-    private tasks: TaskDBService,
+    private tasks: TasksService,
     private updates: UpdateService,
     private snackbar: MatSnackBar,
     public projectService: ProjectsService

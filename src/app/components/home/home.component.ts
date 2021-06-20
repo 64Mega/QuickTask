@@ -12,7 +12,7 @@ import { ActivatedRoute, NavigationEnd, Router } from '@angular/router';
 import { Observable, Subscription } from 'rxjs';
 import { delay } from 'rxjs/operators';
 
-import { TaskDBService } from 'src/app/services/taskdb.service';
+import { TasksService } from 'src/app/services/tasks.service';
 import { Task } from '../../models/Task';
 
 @Component({
@@ -32,7 +32,7 @@ export class HomeComponent implements OnInit, OnDestroy {
   private _activeRouteSub?: Subscription;
 
   constructor(
-    public taskService: TaskDBService,
+    public taskService: TasksService,
     private changeDetectorRef: ChangeDetectorRef,
     private activeRoute: ActivatedRoute
   ) {

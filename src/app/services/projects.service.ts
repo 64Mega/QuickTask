@@ -33,14 +33,15 @@ export class ProjectsService {
     });
   }
 
-  async save(project: Project) {
+  async update(project: Project) {
     await this.db.projects.put(project, project.id);
     this.getAll();
   }
 
-  getById(id: number) {
+  async getById(id: number) {
     const data = this.db.projects.get(id);
-    return from(data);
+
+    return data;
   }
 
   async insert(row: Project) {

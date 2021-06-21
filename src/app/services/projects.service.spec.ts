@@ -71,6 +71,7 @@ describe('ProjectsService', () => {
       await service.insert(new Project());
       await service.getAll();
       expect(projects.length).toBe(1);
+      return Promise.resolve();
     });
 
     it('should return the instance of the project with the id set correctly', async () => {
@@ -86,6 +87,112 @@ describe('ProjectsService', () => {
         expect(res.id).toBeGreaterThanOrEqual(0);
         expect(res.body).toEqual(timeString);
       }
+      return Promise.resolve();
+    });
+  });
+
+  describe('#deleteAll', () => {
+    it('should clear out the database', async () => {
+      for (let i = 0; i < 10; i++) {
+        await service.insert(new Project());
+      }
+      await service.getAll();
+      expect(projects.length).toBe(10);
+      await service.deleteAll();
+      await service.getAll();
+      expect(projects.length).toBe(0);
+      return Promise.resolve();
+    });
+  });
+
+  describe('#update', () => {
+    it("Should add a new item to the database if it doesn't exist", async () => {
+      await service.update(new Project());
+      await service.getAll();
+      expect(projects.length).toBe(1);
+      return Promise.resolve();
+    });
+
+    it('Should update an existing project with new information', async () => {
+      const row = await service.insert(new Project());
+      await service.getAll();
+      if (row?.id) {
+        const newName = 'new name';
+        const newBody = 'new body';
+        row.body = newBody;
+        row.name = newName;
+        await service.update(row);
+        const res = await service.getById(row.id);
+        expect(res).toBeTruthy();
+        if (res) {
+          expect(res.name).toEqual(newName);
+          expect(res.body).toEqual(newBody);
+        }
+      }
+    });
+  });
+
+  describe('#getById', () => {
+    it('should return an item with a given id if it exists', async () => {
+      let tmp = await service.insert(new Project());
+      if (tmp?.id) {
+        let res = await service.getById(tmp.id);
+        expect(res).toBeTruthy();
+      }
+    });
+
+    it('should return undefined if an item does not exist', async () => {
+      let res = await service.getById(-1);
+      expect(res).toBeUndefined();
+    });
+  });
+
+  describe('#deleteRow', () => {
+    it('should delete a specified row', async () => {
+      let res = await service.insert(new Project());
+      await service.getAll();
+      expect(projects.length).toBe(1);
+      if (res) {
+        await service.deleteRow(res);
+      }
+      await service.getAll();
+      expect(projects.length).toBe(0);
+    });
+
+    it('should fail if called with no valid row id', async () => {
+      const p = new Project();
+      await service.getAll();
+      expect(projects.length).toBe(0);
+      await expectAsync(service.deleteRow(p)).toBeRejected();
+    });
+
+    it('should only delete the specified row and no others', async () => {
+      for (let i = 0; i < 10; i++) {
+        await service.insert(new Project());
+      }
+      const tmpProject = new Project();
+      tmpProject.name = 'test target';
+
+      let res = await service.insert(tmpProject);
+
+      let oldID: number = 0,
+        oldName: string;
+      if (res) {
+        if (res.id) oldID = res.id;
+        oldName = res.name;
+      }
+
+      await service.getAll();
+      expect(projects.length).toBe(11);
+      if (res) {
+        await service.deleteRow(res);
+        await service.getAll();
+      }
+
+      expect(
+        projects.find((x) => x.id === oldID || x.name === oldName)
+      ).toBeUndefined();
+      expect(projects.length).toBe(10);
     });
   });
 });

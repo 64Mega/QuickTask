@@ -42,12 +42,9 @@ export class ProjectComponent implements OnInit, OnDestroy {
 
   ngOnInit(): void {
     this._routeSub = this.activeRoute.params.subscribe(async (params) => {
-      let project$ = await this.projectService.getById(+params.id);
-      let s = project$.subscribe((project) => {
-        this.project = project;
-        this.subToTasks();
-        s.unsubscribe();
-      });
+      let project = await this.projectService.getById(+params.id);
+      this.project = project;
+      this.subToTasks();
     });
 
     this.subToTasks();

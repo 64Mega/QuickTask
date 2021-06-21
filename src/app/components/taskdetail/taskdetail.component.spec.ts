@@ -4,6 +4,7 @@ import { MatSnackBar } from '@angular/material/snack-bar';
 import { ActivatedRoute } from '@angular/router';
 import { RouterTestingModule } from '@angular/router/testing';
 import { SwUpdate } from '@angular/service-worker';
+import AppRoutes from 'src/app/config/AppRoutes';
 
 import { TaskDetailComponent } from './taskdetail.component';
 
@@ -33,7 +34,7 @@ describe('TaskDetailComponent', () => {
         { provide: SwUpdate, useClass: FakeSwUpdate },
         MatSnackBar,
       ],
-      imports: [MatDialogModule, RouterTestingModule],
+      imports: [MatDialogModule, RouterTestingModule.withRoutes(AppRoutes)],
     }).compileComponents();
   });
 

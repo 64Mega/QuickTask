@@ -1,5 +1,8 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { MatDialogRef } from '@angular/material/dialog';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatSelectModule } from '@angular/material/select';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
 import { ChooseProjectDialogComponent } from './choose-project-dialog.component';
 
@@ -15,6 +18,7 @@ describe('ChooseProjectDialogComponent', () => {
     await TestBed.configureTestingModule({
       declarations: [ChooseProjectDialogComponent],
       providers: [{ provide: MatDialogRef, useValue: mockDialogRef }],
+      imports: [MatSelectModule, MatFormFieldModule, BrowserAnimationsModule],
     }).compileComponents();
   });
 

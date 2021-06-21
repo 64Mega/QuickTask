@@ -1,5 +1,9 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { FormsModule } from '@angular/forms';
 import { MatDialogModule, MatDialogRef } from '@angular/material/dialog';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatInputModule } from '@angular/material/input';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
 import { AddProjectDialogComponent } from './add-project-dialog.component';
 
@@ -15,7 +19,13 @@ describe('AddProjectDialogComponent', () => {
     await TestBed.configureTestingModule({
       declarations: [AddProjectDialogComponent],
       providers: [{ provide: MatDialogRef, useValue: mockDialogRef }],
-      imports: [MatDialogModule],
+      imports: [
+        MatDialogModule,
+        FormsModule,
+        MatFormFieldModule,
+        MatInputModule,
+        BrowserAnimationsModule,
+      ],
     }).compileComponents();
   });
 

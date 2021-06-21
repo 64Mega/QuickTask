@@ -15,17 +15,22 @@ export class ProjectsService {
 
   constructor() {}
 
-  async getAll() {
+  async deleteAll() {
+    return this.db.projects.clear();
+  }
+
+  async getAll(): Promise<Project[]> {
     const data = of(await this.db.projects.toArray());
 
     this._dataSub?.unsubscribe();
 
-    this._dataSub = data.subscribe(async (projectPromise) => {
-      let projects = await projectPromise;
-      this.projects.next(projects);
+    return new Promise((resolve) => {
+      this._dataSub = data.subscribe(async (projectPromise) => {
+        let projects = await projectPromise;
+        this.projects.next(projects);
+        resolve(projects);
+      });
     });
-
-    return data;
   }
 
   async save(project: Project) {
@@ -41,12 +46,14 @@ export class ProjectsService {
   async insert(row: Project) {
     const key = await this.db.projects.put(row);
     const data = await this.db.projects.get(key);
-    this.getAll();
-    return of(data);
+    return Promise.resolve(data);
   }
 
   async deleteRow(row: Project) {
-    if (row.id) await this.db.tasks.delete(row.id);
-    this.getAll();
+    if (row.id) {
+      await this.db.projects.where('id').equals(row.id).delete();
+      return Promise.resolve();
+    }
+    return Promise.reject();
   }
 }

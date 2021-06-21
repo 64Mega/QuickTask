@@ -1,7 +1,9 @@
 import { Overlay } from '@angular/cdk/overlay';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { MatDividerModule } from '@angular/material/divider';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { RouterTestingModule } from '@angular/router/testing';
+import AppRoutes from 'src/app/config/AppRoutes';
 
 import { HomeComponent } from './home.component';
 
@@ -13,7 +15,7 @@ describe('HomeComponent', () => {
     await TestBed.configureTestingModule({
       declarations: [HomeComponent],
       providers: [MatSnackBar, Overlay],
-      imports: [RouterTestingModule],
+      imports: [RouterTestingModule.withRoutes(AppRoutes), MatDividerModule],
     }).compileComponents();
   });
 

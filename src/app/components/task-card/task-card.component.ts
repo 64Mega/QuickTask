@@ -29,7 +29,7 @@ import { ChooseProjectDialogComponent } from '../choose-project-dialog/choose-pr
   styleUrls: ['./task-card.component.scss'],
 })
 export class TaskCardComponent implements OnInit {
-  @Input() task!: Task;
+  @Input() task: Task = new Task();
   @Input() menu!: MatMenu;
   @Output() deleteTask = new EventEmitter<Task>();
   @Output() toggleTask = new EventEmitter<Task>();

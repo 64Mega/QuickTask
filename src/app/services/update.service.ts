@@ -10,8 +10,10 @@ export class UpdateService {
   updateAvailable$ = this.updateAvailable.asObservable();
 
   constructor(public updates: SwUpdate) {
-    updates.available.subscribe((event) => {
-      this.updateAvailable.next(true);
-    });
+    if (updates.isEnabled) {
+      updates.available.subscribe((event) => {
+        this.updateAvailable.next(true);
+      });
+    }
   }
 }

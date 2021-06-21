@@ -1,20 +1,44 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { MatDialogModule, MatDialogRef } from '@angular/material/dialog';
+import { MatSnackBar } from '@angular/material/snack-bar';
+import { ActivatedRoute } from '@angular/router';
+import { RouterTestingModule } from '@angular/router/testing';
+import { SwUpdate } from '@angular/service-worker';
 
-import { TaskdetailComponent } from './taskdetail.component';
+import { TaskDetailComponent } from './taskdetail.component';
 
-describe('TaskdetailComponent', () => {
-  let component: TaskdetailComponent;
-  let fixture: ComponentFixture<TaskdetailComponent>;
+class FakeSwUpdate {}
+
+describe('TaskDetailComponent', () => {
+  let component: TaskDetailComponent;
+  let fixture: ComponentFixture<TaskDetailComponent>;
+
+  const fakeActivatedRoute = {
+    snapshot: { data: {} },
+    params: {
+      subscribe: jasmine.createSpy('subscribe'),
+    },
+  };
+
+  const mockDialogRef = {
+    close: jasmine.createSpy('close'),
+  };
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ TaskdetailComponent ]
-    })
-    .compileComponents();
+      declarations: [TaskDetailComponent],
+      providers: [
+        { provide: ActivatedRoute, useValue: fakeActivatedRoute },
+        { provide: MatDialogRef, useValue: mockDialogRef },
+        { provide: SwUpdate, useClass: FakeSwUpdate },
+        MatSnackBar,
+      ],
+      imports: [MatDialogModule, RouterTestingModule],
+    }).compileComponents();
   });
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(TaskdetailComponent);
+    fixture = TestBed.createComponent(TaskDetailComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });
